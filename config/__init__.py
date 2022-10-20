@@ -1,1 +1,1 @@
-from authz.config.config import print_config
+from config.config import print_config
