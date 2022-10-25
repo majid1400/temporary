@@ -4,7 +4,7 @@ from elasticsearch import NotFoundError
 from retry import retry
 from config import Config, send_rabbitmq, client
 from utils import get_index
-from services import get_twt_robot, exist_post_message
+from services import is_robot, is_exist
 
 
 def callback(ch, method, properties, body):
@@ -18,8 +18,8 @@ def callback(ch, method, properties, body):
 
     while True:
         try:
-            robot = get_twt_robot(result['user_id'])
-            duplicate, duplicate_count = exist_post_message(result['message_clean'][:150])
+            robot = is_robot(result['user_id'])
+            duplicate, duplicate_count = is_exist(result['message_clean'][:150])
         except Exception as e:
             print(f'error tasks: {e}')
             send_rabbitmq('fail',
